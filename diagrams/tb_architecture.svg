@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1010" viewBox="0 0 1200 1010" role="img" aria-labelledby="t d">
+<title id="t">RV32I Cocotb testbench interfaces (Harvard)</title>
+<desc id="d">Port-level view of the Python/Cocotb testbench connected to the SystemVerilog rv32i_cpu module: clk and reset, separate instruction-memory (imem_*) and data-memory (dmem_*) interfaces, and illegal_instruction.</desc>
+<defs><marker id="a" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#334155"/></marker><style>text{font-family:Arial,Helvetica,sans-serif;fill:#172033}.h{font-weight:700}.b{font-size:14px}.s{font-size:13px;font-family:Consolas,"Courier New",monospace}.n{font-size:13px;fill:#475569}</style></defs>
+<rect width="1200" height="1010" fill="#fff"/>
+<text x="600" y="38" text-anchor="middle" class="h" font-size="22">RV32I Cocotb Testbench: DUT Interfaces (Harvard)</text>
+<rect x="30.0" y="70" width="400.0" height="860" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+<text x="230" y="96" text-anchor="middle" class="h" font-size="18">Python / Cocotb  (cocotb/test_rv32i.py)</text>
+<rect x="60.0" y="110" width="340.0" height="95" rx="8" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/>
+<text x="230" y="136" text-anchor="middle" class="h" font-size="16">start_cpu()</text>
+<text x="230" y="160" text-anchor="middle" class="b">Clock(dut.clk, 10 ns)</text>
+<text x="230" y="180" text-anchor="middle" class="b">dut.reset: high 3 cycles, then low</text>
+<rect x="60.0" y="225" width="340.0" height="190" rx="8" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/>
+<text x="230" y="251" text-anchor="middle" class="h" font-size="16">BusModel.run_imem()</text>
+<text x="230" y="275" text-anchor="middle" class="b">Instruction memory responder</text>
+<text x="230" y="295" text-anchor="middle" class="b">Samples imem_* on falling clk edge</text>
+<text x="230" y="315" text-anchor="middle" class="b">Returns program word at imem_addr</text>
+<text x="230" y="335" text-anchor="middle" class="b">Responds after BUS_LATENCY = 3 cycles</text>
+<text x="230" y="355" text-anchor="middle" class="b">Pulses imem_ready; logs imem_fetches</text>
+<rect x="60.0" y="435" width="340.0" height="230" rx="8" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/>
+<text x="230" y="461" text-anchor="middle" class="h" font-size="16">BusModel.run_dmem()</text>
+<text x="230" y="485" text-anchor="middle" class="b">Data memory responder</text>
+<text x="230" y="505" text-anchor="middle" class="b">Samples dmem_* on falling clk edge</text>
+<text x="230" y="525" text-anchor="middle" class="b">Load: returns data word at dmem_addr</text>
+<text x="230" y="545" text-anchor="middle" class="b">Store: logs (dmem_addr, dmem_wdata)</text>
+<text x="230" y="565" text-anchor="middle" class="b">Responds after BUS_LATENCY = 3 cycles</text>
+<text x="230" y="585" text-anchor="middle" class="b">Pulses dmem_ready</text>
+<text x="230" y="605" text-anchor="middle" class="b">Logs: dmem_reads, dmem_writes</text>
+<rect x="60.0" y="700" width="340.0" height="200" rx="8" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/>
+<text x="230" y="726" text-anchor="middle" class="h" font-size="16">Test checks (assertions)</text>
+<text x="230" y="750" text-anchor="middle" class="b">Result stored at 0x100 (ALU)</text>
+<text x="230" y="770" text-anchor="middle" class="b">imem fetch sequence (branch/jump)</text>
+<text x="230" y="790" text-anchor="middle" class="b">lw data, sw write on dmem</text>
+<text x="230" y="810" text-anchor="middle" class="b">illegal_instruction pulse</text>
+<text x="230" y="830" text-anchor="middle" class="b">No dmem store on illegal</text>
+<line x1="230" y1="415" x2="230" y2="435" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<line x1="230" y1="665" x2="230" y2="700" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="770.0" y="70" width="400.0" height="860" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+<text x="970" y="96" text-anchor="middle" class="h" font-size="20">SystemVerilog</text>
+<rect x="810.0" y="105" width="320.0" height="805" rx="8" fill="#ffffff" stroke="#4ade80" stroke-width="2"/>
+<text x="970" y="131" text-anchor="middle" class="h" font-size="18">module rv32i_cpu</text>
+<text x="970" y="146" text-anchor="middle" class="n">(student RTL or mock CPU)</text>
+<text x="970" y="855" text-anchor="middle" class="n">Mock internals: FETCH, EXECUTE, COMMIT,</text>
+<text x="970" y="872" text-anchor="middle" class="n">LOAD, STORE states; 32 x 32-bit regfile;</text>
+<text x="970" y="889" text-anchor="middle" class="n">instruction classes in sv/mock_cpu/instructions/</text>
+<rect x="442.0" y="100" width="356.0" height="108" rx="6" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5,4"/>
+<text x="620" y="118" text-anchor="middle" class="h" font-size="13">Clock / reset interface</text>
+<line x1="430" y1="154" x2="810" y2="154" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="585.6" y="135" width="68.8" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="148" text-anchor="middle" class="s">clk (1)</text>
+<text x="820" y="158" text-anchor="start" class="s">clk</text>
+<line x1="430" y1="190" x2="810" y2="190" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="577.2" y="171" width="85.6" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="184" text-anchor="middle" class="s">reset (1)</text>
+<text x="820" y="194" text-anchor="start" class="s">reset</text>
+<rect x="442.0" y="225" width="356.0" height="108" rx="6" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5,4"/>
+<text x="620" y="243" text-anchor="middle" class="h" font-size="13">Instruction memory: request (CPU drives)</text>
+<line x1="810" y1="279" x2="430" y2="279" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="556.2" y="260" width="127.6" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="273" text-anchor="middle" class="s">imem_valid (1)</text>
+<text x="820" y="283" text-anchor="start" class="s">imem_valid</text>
+<line x1="810" y1="315" x2="430" y2="315" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="547.8" y="296" width="144.4" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="309" text-anchor="middle" class="s">imem_addr [31:0]</text>
+<text x="820" y="319" text-anchor="start" class="s">imem_addr</text>
+<rect x="442.0" y="350" width="356.0" height="108" rx="6" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5,4"/>
+<text x="620" y="368" text-anchor="middle" class="h" font-size="13">Instruction memory: response (testbench drives)</text>
+<line x1="430" y1="404" x2="810" y2="404" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="556.2" y="385" width="127.6" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="398" text-anchor="middle" class="s">imem_ready (1)</text>
+<text x="820" y="408" text-anchor="start" class="s">imem_ready</text>
+<line x1="430" y1="440" x2="810" y2="440" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="543.6" y="421" width="152.8" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="434" text-anchor="middle" class="s">imem_rdata [31:0]</text>
+<text x="820" y="444" text-anchor="start" class="s">imem_rdata</text>
+<rect x="442.0" y="475" width="356.0" height="180" rx="6" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5,4"/>
+<text x="620" y="493" text-anchor="middle" class="h" font-size="13">Data memory: request (CPU drives)</text>
+<line x1="810" y1="529" x2="430" y2="529" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="556.2" y="510" width="127.6" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="523" text-anchor="middle" class="s">dmem_valid (1)</text>
+<text x="820" y="533" text-anchor="start" class="s">dmem_valid</text>
+<line x1="810" y1="565" x2="430" y2="565" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="547.8" y="546" width="144.4" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="559" text-anchor="middle" class="s">dmem_addr [31:0]</text>
+<text x="820" y="569" text-anchor="start" class="s">dmem_addr</text>
+<line x1="810" y1="601" x2="430" y2="601" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="568.8" y="582" width="102.4" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="595" text-anchor="middle" class="s">dmem_we (1)</text>
+<text x="820" y="605" text-anchor="start" class="s">dmem_we</text>
+<line x1="810" y1="637" x2="430" y2="637" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="543.6" y="618" width="152.8" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="631" text-anchor="middle" class="s">dmem_wdata [31:0]</text>
+<text x="820" y="641" text-anchor="start" class="s">dmem_wdata</text>
+<rect x="442.0" y="672" width="356.0" height="108" rx="6" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5,4"/>
+<text x="620" y="690" text-anchor="middle" class="h" font-size="13">Data memory: response (testbench drives)</text>
+<line x1="430" y1="726" x2="810" y2="726" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="556.2" y="707" width="127.6" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="720" text-anchor="middle" class="s">dmem_ready (1)</text>
+<text x="820" y="730" text-anchor="start" class="s">dmem_ready</text>
+<line x1="430" y1="762" x2="810" y2="762" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="543.6" y="743" width="152.8" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="756" text-anchor="middle" class="s">dmem_rdata [31:0]</text>
+<text x="820" y="766" text-anchor="start" class="s">dmem_rdata</text>
+<rect x="442.0" y="797" width="356.0" height="72" rx="6" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5,4"/>
+<text x="620" y="815" text-anchor="middle" class="h" font-size="13">Status interface</text>
+<line x1="810" y1="851" x2="430" y2="851" stroke="#334155" stroke-width="2" marker-end="url(#a)"/>
+<rect x="518.4" y="832" width="203.2" height="17" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="0"/>
+<text x="620" y="845" text-anchor="middle" class="s">illegal_instruction (1)</text>
+<text x="820" y="855" text-anchor="start" class="s">illegal_instruction</text>
+<rect x="120.0" y="940" width="960.0" height="62" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+<text x="600" y="966" text-anchor="middle" class="h" font-size="15">Harvard: separate instruction and data memory interfaces</text>
+<text x="600" y="990" text-anchor="middle" class="b">Fetch uses imem_* only; lw and sw use dmem_* only. Each side has its own valid/ready handshake.</text>
+</svg>
