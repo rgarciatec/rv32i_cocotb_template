@@ -8,7 +8,7 @@ model a complete system or peripherals.
 
 ## Requirements
 
-- Verilator
+- Verilator tested on 5.052 2026-09-05 rev v5.052-61-g983a06a1
 - Python 3 with the packages in [`cocotb/requirements.txt`](cocotb/requirements.txt):
 
 ```sh
