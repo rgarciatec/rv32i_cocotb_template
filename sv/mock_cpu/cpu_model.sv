@@ -9,40 +9,34 @@ class cpu_model;
     instruction_id_t opcode_lookup[rv32i_instruction::opcode_t];
 
     function new();
-        instruction_lookup = '{
-            {rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_ADD_SUB, rv32i_instruction::FUNCT7_BASE}: rv32i_instruction::INSN_ADD,
-            {rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_ADD_SUB, rv32i_instruction::FUNCT7_ALT}: rv32i_instruction::INSN_SUB,
-            {rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_SLL, rv32i_instruction::FUNCT7_BASE}: rv32i_instruction::INSN_SLL,
-            {rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_SLT, rv32i_instruction::FUNCT7_BASE}: rv32i_instruction::INSN_SLT,
-            {rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_SLTU, rv32i_instruction::FUNCT7_BASE}: rv32i_instruction::INSN_SLTU,
-            {rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_XOR, rv32i_instruction::FUNCT7_BASE}: rv32i_instruction::INSN_XOR,
-            {rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_SHIFT, rv32i_instruction::FUNCT7_BASE}: rv32i_instruction::INSN_SRL,
-            {rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_SHIFT, rv32i_instruction::FUNCT7_ALT}: rv32i_instruction::INSN_SRA,
-            {rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_OR, rv32i_instruction::FUNCT7_BASE}: rv32i_instruction::INSN_OR,
-            {rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_AND, rv32i_instruction::FUNCT7_BASE}: rv32i_instruction::INSN_AND,
-            {rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_SLL, rv32i_instruction::FUNCT7_BASE}: rv32i_instruction::INSN_SLLI,
-            {rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_SHIFT, rv32i_instruction::FUNCT7_BASE}: rv32i_instruction::INSN_SRLI,
-            {rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_SHIFT, rv32i_instruction::FUNCT7_ALT}: rv32i_instruction::INSN_SRAI
-        };
-        opcode_funct3_lookup = '{
-            {rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_ADD_SUB}: rv32i_instruction::INSN_ADDI,
-            {rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_SLT}: rv32i_instruction::INSN_SLTI,
-            {rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_SLTU}: rv32i_instruction::INSN_SLTIU,
-            {rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_XOR}: rv32i_instruction::INSN_XORI,
-            {rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_OR}: rv32i_instruction::INSN_ORI,
-            {rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_AND}: rv32i_instruction::INSN_ANDI,
-            {rv32i_instruction::OPCODE_BRANCH, rv32i_instruction::FUNCT3_ADD_SUB}: rv32i_instruction::INSN_BEQ,
-            {rv32i_instruction::OPCODE_BRANCH, rv32i_instruction::FUNCT3_SLL}: rv32i_instruction::INSN_BNE,
-            {rv32i_instruction::OPCODE_BRANCH, rv32i_instruction::FUNCT3_XOR}: rv32i_instruction::INSN_BLT,
-            {rv32i_instruction::OPCODE_BRANCH, rv32i_instruction::FUNCT3_SHIFT}: rv32i_instruction::INSN_BGE,
-            {rv32i_instruction::OPCODE_LOAD, rv32i_instruction::LOAD_FUNCT3_WORD}: rv32i_instruction::INSN_LW,
-            {rv32i_instruction::OPCODE_STORE, rv32i_instruction::STORE_FUNCT3_WORD}: rv32i_instruction::INSN_SW,
-            {rv32i_instruction::OPCODE_JALR, rv32i_instruction::FUNCT3_ADD_SUB}: rv32i_instruction::INSN_JALR
-        };
-        opcode_lookup = '{
-            rv32i_instruction::OPCODE_JAL: rv32i_instruction::INSN_JAL,
-            rv32i_instruction::OPCODE_LUI: rv32i_instruction::INSN_LUI
-        };
+        instruction_lookup[{rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_ADD_SUB, rv32i_instruction::FUNCT7_BASE}] = rv32i_instruction::INSN_ADD;
+        instruction_lookup[{rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_ADD_SUB, rv32i_instruction::FUNCT7_ALT}] = rv32i_instruction::INSN_SUB;
+        instruction_lookup[{rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_SLL, rv32i_instruction::FUNCT7_BASE}] = rv32i_instruction::INSN_SLL;
+        instruction_lookup[{rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_SLT, rv32i_instruction::FUNCT7_BASE}] = rv32i_instruction::INSN_SLT;
+        instruction_lookup[{rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_SLTU, rv32i_instruction::FUNCT7_BASE}] = rv32i_instruction::INSN_SLTU;
+        instruction_lookup[{rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_XOR, rv32i_instruction::FUNCT7_BASE}] = rv32i_instruction::INSN_XOR;
+        instruction_lookup[{rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_SHIFT, rv32i_instruction::FUNCT7_BASE}] = rv32i_instruction::INSN_SRL;
+        instruction_lookup[{rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_SHIFT, rv32i_instruction::FUNCT7_ALT}] = rv32i_instruction::INSN_SRA;
+        instruction_lookup[{rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_OR, rv32i_instruction::FUNCT7_BASE}] = rv32i_instruction::INSN_OR;
+        instruction_lookup[{rv32i_instruction::OPCODE_REGISTER, rv32i_instruction::FUNCT3_AND, rv32i_instruction::FUNCT7_BASE}] = rv32i_instruction::INSN_AND;
+        instruction_lookup[{rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_SLL, rv32i_instruction::FUNCT7_BASE}] = rv32i_instruction::INSN_SLLI;
+        instruction_lookup[{rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_SHIFT, rv32i_instruction::FUNCT7_BASE}] = rv32i_instruction::INSN_SRLI;
+        instruction_lookup[{rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_SHIFT, rv32i_instruction::FUNCT7_ALT}] = rv32i_instruction::INSN_SRAI;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_ADD_SUB}] = rv32i_instruction::INSN_ADDI;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_SLT}] = rv32i_instruction::INSN_SLTI;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_SLTU}] = rv32i_instruction::INSN_SLTIU;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_XOR}] = rv32i_instruction::INSN_XORI;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_OR}] = rv32i_instruction::INSN_ORI;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_IMMEDIATE, rv32i_instruction::FUNCT3_AND}] = rv32i_instruction::INSN_ANDI;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_BRANCH, rv32i_instruction::FUNCT3_ADD_SUB}] = rv32i_instruction::INSN_BEQ;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_BRANCH, rv32i_instruction::FUNCT3_SLL}] = rv32i_instruction::INSN_BNE;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_BRANCH, rv32i_instruction::FUNCT3_XOR}] = rv32i_instruction::INSN_BLT;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_BRANCH, rv32i_instruction::FUNCT3_SHIFT}] = rv32i_instruction::INSN_BGE;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_LOAD, rv32i_instruction::LOAD_FUNCT3_WORD}] = rv32i_instruction::INSN_LW;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_STORE, rv32i_instruction::STORE_FUNCT3_WORD}] = rv32i_instruction::INSN_SW;
+        opcode_funct3_lookup[{rv32i_instruction::OPCODE_JALR, rv32i_instruction::FUNCT3_ADD_SUB}] = rv32i_instruction::INSN_JALR;
+        opcode_lookup[rv32i_instruction::OPCODE_JAL] = rv32i_instruction::INSN_JAL;
+        opcode_lookup[rv32i_instruction::OPCODE_LUI] = rv32i_instruction::INSN_LUI;
     endfunction
 
     virtual function instruction_id_t decode_type(input logic [31:0] instruction_word);
