@@ -25,7 +25,16 @@ export COCOTB_COVERAGE_FILE ?= $(RESULTS_DIR)/coverage.json
 INSTRUCTIONS ?= all
 export RV32I_INSTRUCTIONS := $(INSTRUCTIONS)
 
-.PHONY: test_cpu clean
+# Pruebas a nivel de programa (cocotb/test_programs.py).
+#   make test_programs                     -> todos los programas
+#   make test_programs PROGRAMS=factorial  -> solo uno (regex sobre el nombre)
+PROGRAMS ?=
+PROGRAMS_RESULTS_FILE ?= $(RESULTS_DIR)/results_programs.xml
+ifneq ($(strip $(PROGRAMS)),)
+export COCOTB_TEST_FILTER := $(PROGRAMS)
+endif
+
+.PHONY: test_cpu test_programs clean
 
 test_cpu:
 	@mkdir -p "$(RESULTS_DIR)"; \
@@ -41,7 +50,16 @@ test_cpu:
 	report_status=$$?; \
 	test $$sim_status -eq 0 -a $$report_status -eq 0
 
+test_programs:
+	@mkdir -p "$(RESULTS_DIR)"; \
+	rm -f "$(PROGRAMS_RESULTS_FILE)"; \
+	rm -rf "$(SIM_BUILD)"; \
+	$(MAKE) -f "$$(cocotb-config --makefiles)/Makefile.sim" \
+		SIM=$(SIM) SIM_BUILD="$(SIM_BUILD)" TOPLEVEL_LANG=verilog TOPLEVEL=$(TOPLEVEL) \
+		COCOTB_TEST_MODULES=test_programs \
+		VERILOG_SOURCES="$(VERILOG_SOURCES)" COCOTB_RESULTS_FILE="$(PROGRAMS_RESULTS_FILE)"
+
 clean:
 	$(MAKE) -f "$$(cocotb-config --makefiles)/Makefile.sim" SIM=$(SIM) SIM_BUILD="$(SIM_BUILD)" clean
-	rm -f "$(COCOTB_RESULTS_FILE)" "$(RESULTS_DIR)/dashboard_cpu.html" "$(COCOTB_COVERAGE_FILE)"
+	rm -f "$(COCOTB_RESULTS_FILE)" "$(RESULTS_DIR)/dashboard_cpu.html" "$(COCOTB_COVERAGE_FILE)" "$(PROGRAMS_RESULTS_FILE)"
 	rm -rf $(PY_DIR)/__pycache__ $(PY_DIR)/.pytest_cache __pycache__ .pytest_cache
